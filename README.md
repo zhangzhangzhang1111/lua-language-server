@@ -35,6 +35,54 @@ The language server can be installed for use in Visual Studio Code, NeoVim, and 
 
 See [installation instructions on our website](https://luals.github.io/#install).
 
+## MCP server for AI clients
+
+This fork also includes a Node.js MCP stdio server that runs the bundled
+LuaLS release and exposes it to AI clients through JSON-RPC/LSP bridge tools.
+The service automatically selects the correct release artifact for the current
+Node.js platform and architecture.
+
+Bundled LuaLS release artifacts are stored in `vendor/luals/3.18.2/` for:
+
+- macOS: `darwin-arm64`, `darwin-x64`
+- Linux: `linux-arm64`, `linux-x64`
+- Windows: `win32-x64`, `win32-ia32`
+
+Start the MCP server:
+
+```bash
+npm install
+npm start
+```
+
+Example MCP client configuration:
+
+```json
+{
+  "mcpServers": {
+    "luals": {
+      "command": "node",
+      "args": [
+        "/absolute/path/to/lua-language-server/mcp-server/src/server.js"
+      ]
+    }
+  }
+}
+```
+
+Available MCP tools:
+
+- `luals_executable_info`: returns the selected LuaLS runtime and all bundled runtimes.
+- `luals_initialize`: sends `initialize` and `initialized` to LuaLS for a workspace.
+- `luals_request`: sends any LuaLS LSP request, such as `textDocument/definition`, `textDocument/references`, `textDocument/completion`, `textDocument/hover`, `textDocument/rename`, `textDocument/codeAction`, or `textDocument/formatting`.
+- `luals_notify`: sends any LuaLS LSP notification.
+- `luals_open_document`, `luals_change_document`, `luals_close_document`: convenience wrappers for document lifecycle notifications.
+- `luals_shutdown`: gracefully shuts down the LuaLS child process.
+
+Because `luals_request` and `luals_notify` forward arbitrary LSP methods, the
+MCP service can use the complete LuaLS feature surface without needing a new
+MCP tool for every LuaLS capability.
+
 [![Install in VS Code](https://img.shields.io/badge/VS%20Code-Install-blue?style=for-the-badge&logo=visualstudiocode "Install in VS Code")](https://luals.github.io/#vscode-install)
 [![Install for NeoVim](https://img.shields.io/badge/NeoVim-Install-blue?style=for-the-badge&logo=neovim "Install for NeoVim")](https://luals.github.io/#neovim-install)
 [![Other](https://img.shields.io/badge/Other-Install-blue?style=for-the-badge&logo=windowsterminal "Install for command line")](https://luals.github.io/#other-install)

@@ -6,3 +6,5 @@
 !/meta/3rd
 !/meta/whimsical
 /bin*
+node_modules/
+vendor/luals/downloads/

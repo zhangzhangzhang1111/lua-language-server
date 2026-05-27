@@ -1,0 +1,16 @@
+{
+  "name": "lua-language-server-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "luals-mcp": "mcp-server/src/server.js"
+  },
+  "scripts": {
+    "start": "node mcp-server/src/server.js",
+    "test": "node --test mcp-server/test/*.test.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0"
+  }
+}
