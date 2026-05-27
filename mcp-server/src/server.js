@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
 
 import { LspClient } from './lsp-client.js';
@@ -214,7 +216,7 @@ process.on('SIGTERM', () => {
   process.exit(143);
 });
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
   main().catch((error) => {
     console.error(error);
     process.exit(1);
